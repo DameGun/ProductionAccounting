@@ -1,7 +1,7 @@
-﻿using ProductionAccounting.DataAccess.Aggregations;
-using ProductionAccounting.DataAccess.Shared;
+﻿using ProductionAccounting.Core.Aggregations;
+using ProductionAccounting.Core.Shared;
 
-namespace ProductionAccounting.DataAccess.Entities
+namespace ProductionAccounting.Core.Entities
 {
     public class ProductionApplication
 	{

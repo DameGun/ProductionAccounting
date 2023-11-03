@@ -1,6 +1,6 @@
-﻿using ProductionAccounting.DataAccess.Entities;
+﻿using ProductionAccounting.Core.Entities;
 
-namespace ProductionAccounting.DataAccess.Aggregations
+namespace ProductionAccounting.Core.Aggregations
 {
     public class Product
     {
@@ -8,9 +8,9 @@ namespace ProductionAccounting.DataAccess.Aggregations
         public string Name { get; set; }
         public double Weight { get; set; }
         public int CategoryId { get; set; }
-        public double Cost { get; set; }
+        public decimal Cost { get; set; }
 
-        public Category? Category { get; set; }
+        public Category Category { get; set; }
         public IEnumerable<ProductUnit>? ProductUnits { get; set; }
 		public IEnumerable<ProductionApplication>? Applications { get; set; }
 	}

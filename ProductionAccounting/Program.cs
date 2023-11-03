@@ -1,20 +1,30 @@
 using Microsoft.EntityFrameworkCore;
+using ProductionAccounting.Application.Mappings;
+using ProductionAccounting.Application.Services.Implementations;
+using ProductionAccounting.Application.Services.Interfaces;
 using ProductionAccounting.DataAccess;
+using ProductionAccounting.DataAccess.Services.Interfaces;
+using ProductionAccounting.DataAccess.Services.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql("DefaultConnection"));
+builder.Services.AddAutoMapper(cfg =>
+{
+	cfg.AddMaps("ProductionAccounting.Application");
+});
+
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddDataAccess(builder.Configuration);
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();

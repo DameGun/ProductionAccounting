@@ -1,4 +1,4 @@
-﻿namespace ProductionAccounting.DataAccess.Shared
+﻿namespace ProductionAccounting.Core.Shared
 {
     public enum ApplicationState
     {

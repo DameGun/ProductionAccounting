@@ -1,4 +1,4 @@
-﻿namespace ProductionAccounting.DataAccess.Entities
+﻿namespace ProductionAccounting.Core.Entities
 {
 	public class Invoice
 	{

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProductionAccounting.DataAccess.Aggregations;
-using ProductionAccounting.DataAccess.Entities;
+using Microsoft.Extensions.Configuration;
+using ProductionAccounting.Core.Aggregations;
+using ProductionAccounting.DataAccess.Configurations;
+using ProductionAccounting.Core.Entities;
 
 namespace ProductionAccounting.DataAccess
 {
@@ -14,6 +16,17 @@ namespace ProductionAccounting.DataAccess
 		public DbSet<ProductionApplication> Applications { get; set; }
 		public DbSet<ProductUnit> ProductUnits { get; set; }
 
-		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
+
+		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.ApplyConfiguration(new ProductConfiguration());
+			modelBuilder.ApplyConfiguration(new ProductUnitConfiguration());
+			modelBuilder.ApplyConfiguration(new BoxConfiguration());
+			modelBuilder.ApplyConfiguration(new PalletConfiguration());
+			modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
+			modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+		}
 	}
 }

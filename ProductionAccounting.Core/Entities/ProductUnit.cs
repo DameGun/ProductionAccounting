@@ -1,6 +1,6 @@
-﻿using ProductionAccounting.DataAccess.Aggregations;
+﻿using ProductionAccounting.Core.Aggregations;
 
-namespace ProductionAccounting.DataAccess.Entities
+namespace ProductionAccounting.Core.Entities
 {
 	public class ProductUnit
 	{
