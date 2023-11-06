@@ -27,6 +27,7 @@ namespace ProductionAccounting.DataAccess
 			modelBuilder.ApplyConfiguration(new PalletConfiguration());
 			modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
 			modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+			modelBuilder.ApplyConfiguration(new ProductionApplicationConfiguration());
 		}
 	}
 }

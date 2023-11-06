@@ -4,6 +4,6 @@ namespace ProductionAccounting.DataAccess.Services.Interfaces
 {
 	public interface IProductRepository : IBaseRepository<Product, int>
 	{
-		Task<IEnumerable<Product>?> GetAllAsync();
+		Task<IEnumerable<Product>?> GetProductsByCategory(int categoryId);
 	}
 }

@@ -1,15 +1,19 @@
-using Microsoft.EntityFrameworkCore;
-using ProductionAccounting.Application.Mappings;
-using ProductionAccounting.Application.Services.Implementations;
-using ProductionAccounting.Application.Services.Interfaces;
+using LoggerService;
+using NLog;
+using ProductionAccounting.Api.Extensions;
+using ProductionAccounting.Application;
 using ProductionAccounting.DataAccess;
-using ProductionAccounting.DataAccess.Services.Interfaces;
-using ProductionAccounting.DataAccess.Services.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
-builder.Services.AddControllers();
+builder.Services.ConfigureLoggerService();
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+	options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -19,11 +23,19 @@ builder.Services.AddAutoMapper(cfg =>
 	cfg.AddMaps("ProductionAccounting.Application");
 });
 
-builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddDataAccess(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 
 
 var app = builder.Build();
+
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
+
+if (app.Environment.IsProduction())
+{
+	app.UseHsts();
+}
 
 if (app.Environment.IsDevelopment())
 {

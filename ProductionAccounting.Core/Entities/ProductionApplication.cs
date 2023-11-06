@@ -5,14 +5,14 @@ namespace ProductionAccounting.Core.Entities
 {
     public class ProductionApplication
 	{
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 		public int ProductId { get; set; }
 		public int PackagesInBox {  get; set; }
 		public int BoxesInPallet {  get; set; }
-		public DateTime ProdDate { get; set; }
-		public DateTime ExpDate { get; set; }
+		public DateOnly ProdDate { get; set; }
+		public DateOnly ExpDate { get; set; }
 		public ApplicationState CurrentApplicationState { get; set; }
 
-		public Product? Product { get; set; }
+		public Product Product { get; set; }
 	}
 }

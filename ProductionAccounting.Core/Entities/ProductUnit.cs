@@ -6,8 +6,8 @@ namespace ProductionAccounting.Core.Entities
 	{
 		public Guid Serial {  get; set; }
 		public int ProductId { get; set; }
-		public DateTime Date { get; set; }
-		public DateTime Expire { get; set; }
+		public DateOnly Date { get; set; }
+		public DateOnly Expire { get; set; }
 		public Guid BoxBarcode { get; set; }
 
 		public Box? Box { get; set; }

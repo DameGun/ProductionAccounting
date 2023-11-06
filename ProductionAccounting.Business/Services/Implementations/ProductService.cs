@@ -1,78 +1,65 @@
 ﻿using AutoMapper;
-using ProductionAccounting.Application.Models;
+using ProductionAccounting.Application.Models.Product;
 using ProductionAccounting.Application.Services.Interfaces;
 using ProductionAccounting.Core.Aggregations;
+using ProductionAccounting.Core.Exceptions;
 using ProductionAccounting.DataAccess.Services.Interfaces;
 
 namespace ProductionAccounting.Application.Services.Implementations
 {
-	public class ProductService : IProductService
+    public class ProductService : IProductService
 	{
-		private readonly IProductRepository _productRepository;
+		private readonly IRepositoryManager _repository;
 		private readonly IMapper _mapper;
 		
-		public ProductService(IProductRepository productRepository, IMapper mapper)
+		public ProductService(IRepositoryManager repository, IMapper mapper)
 		{
-			_productRepository = productRepository;
+			_repository = repository;
 			_mapper = mapper;
 		}
 
-		public async Task<ProductDTO> CreateAsync(ProductDTO entity)
+		public async Task<ProductDTO> CreateProductAsync(CreateProductDTO productDTO)
 		{
-			var product = _mapper.Map<Product>(entity);
-			var dbResponse = await _productRepository.CreateAsync(product);
-			var productDTO = _mapper.Map<ProductDTO>(dbResponse);
-			return productDTO;
-		}
+			var category = await _repository.CategoryRepository.GetByIdAsync(productDTO.CategoryId);
+			if (category == null) throw new NotFoundException();
 
-		public async Task<ProductDTO> DeleteAsync(int id)
-		{
-			var product = await _productRepository.GetByIdAsync(id);
-			if (product == null)
-			{
-				throw new ArgumentNullException("Product not found");
-			}
-			var dbResponse = await _productRepository.DeleteAsync(id);
-			var productDTO = _mapper.Map<ProductDTO>(dbResponse);
-			return productDTO;
+			var productEntity = _mapper.Map<Product>(productDTO);
+			var dbResponse = await _repository.ProductRepository.CreateAsync(productEntity);
+
+			var productResponse = _mapper.Map<ProductDTO>(dbResponse);
+
+			return productResponse;
 		}
 
 		public async Task<IEnumerable<ProductDTO>> GetAllAsync()
 		{
-			var products = await _productRepository.GetAllAsync();
-			if (products == null)
-			{
-				throw new ArgumentNullException("Product not found");
-			}
+			var products = await _repository.ProductRepository.GetAllAsync();
 			var productsDTO = _mapper.Map<IEnumerable<ProductDTO>>(products);
+
 			return productsDTO;
 		}
 
-		public async Task<ProductDTO> GetByIdAsync(int id)
+		public async Task<ProductDTO> GetProductAsync(int productId)
 		{
-			var product = await _productRepository.GetByIdAsync(id);
-			if (product == null)
-			{
-				throw new ArgumentNullException("Product not found");
-			}
+			var product = await _repository.ProductRepository.GetByIdAsync(productId);
+			if (product == null) throw new NotFoundException();
+
 			var productDTO = _mapper.Map<ProductDTO>(product);
+
 			return productDTO;
 		}
 
-		public async Task<ProductDTO> UpdateAsync(ProductDTO entity)
+		public async Task<IEnumerable<ProductDTO>> GetProductsByCategoryId(int categoryId)
 		{
-			var product = await _productRepository.GetByIdAsync(entity.Id);
-			if (product == null)
-			{
-				throw new ArgumentNullException("Product not found");
-			}
-			product.Name = entity.Name;
-			product.Cost = entity.Cost;
-			product.Weight = entity.Weight;
 
-			var dbResponse = _productRepository.UpdateAsync(product);
-			var productDTO = _mapper.Map<ProductDTO>(dbResponse);
-			return productDTO;
+			var category = await _repository.CategoryRepository.GetByIdAsync(categoryId);
+			if(category == null) throw new NotFoundException();
+
+			var products = await _repository.ProductRepository.GetAllByConditionAsync(p => p.CategoryId == categoryId);
+
+			var productsDTO = _mapper.Map<IEnumerable<ProductDTO>>(products);
+
+			return productsDTO;
 		}
 	}
 }

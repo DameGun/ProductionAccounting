@@ -5,7 +5,7 @@
 		public string InvoiceNo { get; set; }
 		public string Sender {  get; set; }
 		public string Recipient {  get; set; }
-		public DateTime Date { get; set; }
+		public DateOnly Date { get; set; }
 		public double TotalCost { get; set; }
 
 		public IEnumerable<Box>? Boxes { get; set; }

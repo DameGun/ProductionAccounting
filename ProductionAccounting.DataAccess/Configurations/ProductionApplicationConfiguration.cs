@@ -21,6 +21,9 @@ namespace ProductionAccounting.DataAccess.Configurations
 				.Property(a => a.PackagesInBox)
 				.HasColumnName("packages_in_box");
 			builder
+				.Property(a => a.BoxesInPallet)
+				.HasColumnName("boxes_in_pallet");
+			builder
 				.Property(a => a.ProdDate)
 				.HasColumnName("prod_date");
 			builder
@@ -28,12 +31,17 @@ namespace ProductionAccounting.DataAccess.Configurations
 				.HasColumnName("exp_date");
 			builder
 				.Property(a => a.CurrentApplicationState)
-				.HasColumnName("current_application_state");
+				.HasColumnName("current_application_state")
+				.HasColumnType("text");
 
 			builder
 				.HasOne(a => a.Product)
 				.WithMany(p => p.Applications)
 				.HasForeignKey(a => a.ProductId);
+
+			builder
+				.Navigation(a => a.Product)
+				.AutoInclude();
 		}
 	}
 }

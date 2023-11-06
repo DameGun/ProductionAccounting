@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductionAccounting.DataAc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductionAccounting.Application", "ProductionAccounting.Business\ProductionAccounting.Application.csproj", "{854AF3D0-D9EB-41B6-89E7-9490C221BEE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionAccounting.Core", "ProductionAccounting.Core\ProductionAccounting.Core.csproj", "{4D4B264C-B850-4BB3-A9E3-6C0A103E5A05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductionAccounting.Core", "ProductionAccounting.Core\ProductionAccounting.Core.csproj", "{4D4B264C-B850-4BB3-A9E3-6C0A103E5A05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{3205F78B-BBF9-47FB-A191-B470BDD18911}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4D4B264C-B850-4BB3-A9E3-6C0A103E5A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D4B264C-B850-4BB3-A9E3-6C0A103E5A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D4B264C-B850-4BB3-A9E3-6C0A103E5A05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3205F78B-BBF9-47FB-A191-B470BDD18911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3205F78B-BBF9-47FB-A191-B470BDD18911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3205F78B-BBF9-47FB-A191-B470BDD18911}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3205F78B-BBF9-47FB-A191-B470BDD18911}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
