@@ -6,12 +6,14 @@ namespace ProductionAccounting.Application.Models.ProductionApplication
     public class ProductionApplicationDTO
     {
         public Guid Id { get; set; }
-        public int PackagesInBox { get; set; }
-        public int BoxesInPallet { get; set; }
-        public DateOnly ProdDate { get; set; }
-        public DateOnly ExpDate { get; set; }
+        public int PackagesInBoxMax { get; set; }
+        public int BoxesInPalletMax { get; set; }
+        public int? CurrentBoxesCount { get; set; }
+        public int? CurrentPalletsCount { get; set; }
+        public DateTime ProdDate { get; set; }
+        public DateTime ExpDate { get; set; }
         public ApplicationState CurrentApplicationState { get; set; }
 
-        public ProductDTO Product { get; set; }
+        public ProductDTO? Product { get; set; }
     }
 }

@@ -48,5 +48,13 @@ namespace ProductionAccounting.Api.Controllers
 			var application = await _service.ProductionApplicationService.GetApplicationAsync(id);
 			return Ok(application);
 		}
+
+		[Route("setApplicationActive/{id:guid}")]
+		[HttpPost]
+		public async Task<IActionResult> SetApplicationActive(Guid id)
+		{
+			var application = await _service.ProductionApplicationService.SetApplicationActiveAsync(id);
+			return Ok(application);
+		}
 	}
 }

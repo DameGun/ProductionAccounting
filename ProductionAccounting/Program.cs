@@ -10,6 +10,8 @@ LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nl
 
 builder.Services.ConfigureLoggerService();
 
+builder.Services.AddDistributedMemoryCache();
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
 	options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());

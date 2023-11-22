@@ -8,5 +8,6 @@ namespace ProductionAccounting.Application.Services.Interfaces
 		Task<IEnumerable<ProductionApplicationDTO>> GetAllAsync();
 		Task<IEnumerable<ProductionApplicationDTO>> GetApplicationsByProductIdAsync(int productId);
 		Task<ProductionApplicationDTO> GetApplicationAsync(Guid applicationId);
+		Task<ProductionApplicationDTO> SetApplicationActiveAsync(Guid applicationId);
 	}
 }
