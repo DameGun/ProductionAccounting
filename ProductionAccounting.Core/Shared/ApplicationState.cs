@@ -3,6 +3,7 @@
     public enum ApplicationState
     {
         Active,
+        Stopped,
         Closed
     }
 }

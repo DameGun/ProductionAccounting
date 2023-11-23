@@ -2,12 +2,14 @@
 
 namespace ProductionAccounting.Application.Services.Interfaces
 {
-    public interface IProductionApplicationService
+    public interface IProductionApplicationService 
 	{
-		Task<ProductionApplicationDTO> CreateProductionApplicationAsync(CreateProductionApplicationDTO productionApplicationDTO);
-		Task<IEnumerable<ProductionApplicationDTO>> GetAllAsync();
-		Task<IEnumerable<ProductionApplicationDTO>> GetApplicationsByProductIdAsync(int productId);
-		Task<ProductionApplicationDTO> GetApplicationAsync(Guid applicationId);
-		Task<ProductionApplicationDTO> SetApplicationActiveAsync(Guid applicationId);
+		Task<ProductionApplicationDTO> CreateAsync(CreateProductionApplicationDTO createProductionApplicationDTO, bool trackChanges);
+		Task<ProductionApplicationDTO> UpdateAsync(Guid id, UpdateProductionApplicationDTO entity, bool trackChanges);
+		Task<ProductionApplicationDTO> DeleteAsync(Guid id, bool trackChanges);
+		Task<ProductionApplicationDTO?> GetByIdAsync(Guid id, bool trackChanges);
+		Task<IEnumerable<ProductionApplicationDTO>?> GetAllAsync(bool trackChanges);
+		Task<IEnumerable<ProductionApplicationDTO>> GetApplicationsByProductIdAsync(int productId, bool trackChanges);
+		Task<ProductionApplicationDTO> SetApplicationActiveAsync(Guid applicationId, bool trackChanges);
 	}
 }

@@ -2,6 +2,7 @@
 using ProductionAccounting.Application.Models.Box;
 using ProductionAccounting.Application.Services.Interfaces;
 using ProductionAccounting.Core.Entities;
+using ProductionAccounting.Core.Shared;
 using ProductionAccounting.DataAccess.Services.Interfaces;
 
 namespace ProductionAccounting.Application.Services.Implementations
@@ -21,31 +22,58 @@ namespace ProductionAccounting.Application.Services.Implementations
 		{	
 			var boxEntity = _mapper.Map<Box>(createBoxDTO);
 
-			var dbResponse = await _repositoryManager.BoxRepository.CreateAsync(boxEntity);
+			_repositoryManager.BoxRepository.Create(boxEntity);
+			await _repositoryManager.SaveAsync();
 
-			var boxResponse = _mapper.Map<BoxDTO>(dbResponse);
+			var boxResponse = _mapper.Map<BoxDTO>(boxEntity);
 
 			return boxResponse;
 		}
 
-		public Task<BoxDTO> DeleteAsync(Guid id)
+		public async Task<BoxDTO> DeleteAsync(Guid id, bool trackChanges)
 		{
-			throw new NotImplementedException();
+			var box = await _repositoryManager.BoxRepository.FindById(b => b.Barcode == id, trackChanges);
+
+			_repositoryManager.BoxRepository.Delete(box);
+			await _repositoryManager.SaveAsync();
+
+			var boxResponse = _mapper.Map<BoxDTO>(box);
+
+			return boxResponse;
 		}
 
-		public Task<IEnumerable<BoxDTO>?> GetAllAsync()
+		public async Task<IEnumerable<BoxDTO>?> GetBoxesByPalletIdAsync(Guid palletId, 
+			RequestParameters requestParameters, bool palletTrackChanges, bool boxTrackChanges)
 		{
-			throw new NotImplementedException();
+			var pallet = await _repositoryManager.PalletRepository.FindById(p => p.Barcode == palletId, palletTrackChanges);
+
+			var boxes = await _repositoryManager.BoxRepository.GetBoxesByPalletBarcode(palletId, boxTrackChanges, requestParameters);
+
+			var boxesResponse = _mapper.Map<IEnumerable<BoxDTO>>(boxes);
+
+			return boxesResponse;
 		}
 
-		public Task<BoxDTO?> GetByIdAsync(Guid id)
+		public async Task<BoxDTO?> GetByIdAsync(Guid id, bool trackChanges)
 		{
-			throw new NotImplementedException();
+			var box = await _repositoryManager.BoxRepository.FindById(b => b.Barcode == id, trackChanges);
+			var boxResponse = _mapper.Map<BoxDTO>(box);
+
+			return boxResponse;
 		}
 
-		public Task<BoxDTO> UpdateAsync(BoxDTO entity)
+		public async Task<BoxDTO> UpdateAsync(Guid id, UpdateBoxDTO updateBoxDTO, bool trackChanges)
 		{
-			throw new NotImplementedException();
+			var box = await _repositoryManager.BoxRepository.FindById(b => b.Barcode == id, trackChanges);
+
+			var boxEntity = _mapper.Map(updateBoxDTO, box);
+
+			_repositoryManager.BoxRepository.Update(boxEntity);
+			await _repositoryManager.SaveAsync();
+
+			var boxResponse = _mapper.Map<BoxDTO>(boxEntity);
+
+			return boxResponse;
 		}
 	}
 }

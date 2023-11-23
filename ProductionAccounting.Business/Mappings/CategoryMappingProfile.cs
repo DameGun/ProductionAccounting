@@ -10,6 +10,8 @@ namespace ProductionAccounting.Application.Mappings
 			CreateMap<Category, CategoryDTO>();
 
 			CreateMap<CreateCategoryDTO, Category>();
+
+			CreateMap<UpdateCategoryDTO, Category>();
 		}
 	}
 }

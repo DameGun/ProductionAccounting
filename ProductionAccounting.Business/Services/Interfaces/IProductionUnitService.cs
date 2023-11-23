@@ -4,6 +4,6 @@ namespace ProductionAccounting.Application.Services.Interfaces
 {
 	public interface IProductionUnitService
 	{
-		public Task<ActiveProductionResponse> CreateProductionUnitAsync(ActiveProductionRequest request);
+		public Task<ActiveProductionResponse> CreateProductionUnitAsync(ActiveProductionRequest request, bool trackChanges);
 	}
 }

@@ -29,7 +29,8 @@ namespace ProductionAccounting.Application
 			services.AddScoped<IProductionApplicationService, ProductionApplicationService>();
 			services.AddScoped<IPalletService, PalletService>();
 			services.AddScoped<IBoxService, BoxService>();
-			services.AddScoped<IProductUnitService, ProductUnitService>();			
+			services.AddScoped<IProductUnitService, ProductUnitService>();	
+			services.AddScoped<IInvoiceService, InvoiceService>();
 		}
 
 		public static void AddFactoryServices(this IServiceCollection services)

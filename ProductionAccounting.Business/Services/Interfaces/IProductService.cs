@@ -4,9 +4,11 @@ namespace ProductionAccounting.Application.Services.Interfaces
 {
     public interface IProductService
 	{
-		Task<ProductDTO> CreateProductAsync(CreateProductDTO productDTO);
-		Task<ProductDTO> GetProductAsync(int productId);
-		Task<IEnumerable<ProductDTO>> GetAllAsync();
-		Task<IEnumerable<ProductDTO>> GetProductsByCategoryId(int categoryId);
+		Task<ProductDTO> CreateAsync(CreateProductDTO createProductDTO);
+		Task<ProductDTO> UpdateAsync(int id, UpdateProductDTO updateProductDTO, bool trackChanges);
+		Task<ProductDTO> DeleteAsync(int id, bool trackChanges);
+		Task<IEnumerable<ProductDTO>?> GetAllAsync(bool trackChanges);
+		Task<ProductDTO?> GetByIdAsync(int id, bool trackChanges);
+		Task<IEnumerable<ProductDTO>> GetProductsByCategoryId(int categoryId, bool categoryTrackChanges, bool productsTrackChanges);
 	}
 }

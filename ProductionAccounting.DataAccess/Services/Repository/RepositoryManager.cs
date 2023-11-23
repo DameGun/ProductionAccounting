@@ -4,6 +4,7 @@ namespace ProductionAccounting.DataAccess.Services.Repository
 {
 	public sealed class RepositoryManager : IRepositoryManager
 	{
+		private readonly AppDbContext _appDbContext;
 		private readonly Lazy<IProductionApplication> _productionApplicationRepository;
 		private readonly Lazy<IProductRepository> _productRepository;
 		private readonly Lazy<IBoxRepository> _boxRepository;
@@ -36,5 +37,7 @@ namespace ProductionAccounting.DataAccess.Services.Repository
 		public IPalletRepository PalletRepository => _palletRepository.Value;
 
 		public IProductUnitRepository ProductUnitRepository => _productUnitRepository.Value;
+
+		public Task SaveAsync() => _appDbContext.SaveChangesAsync();
 	}
 }

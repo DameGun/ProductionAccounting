@@ -18,7 +18,7 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateProductUnitAsync([FromBody]ActiveProductionRequest activeProductionRequest)
 		{
-			var response = await _serviceManager.ProductionUnitService.CreateProductionUnitAsync(activeProductionRequest);
+			var response = await _serviceManager.ProductionUnitService.CreateProductionUnitAsync(activeProductionRequest, true);
 
 			return Ok(response);
 		}

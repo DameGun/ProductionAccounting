@@ -22,7 +22,8 @@ namespace ProductionAccounting.Application.Factories
 			CreatePalletDTO createPalletDTO = new CreatePalletDTO
 			{
 				Weight = (productionApplication.Product.Weight * productionApplication.PackagesInBoxMax) * productionApplication.BoxesInPalletMax,
-				Boxes = productionApplication.BoxesInPalletMax
+				Boxes = productionApplication.BoxesInPalletMax,
+				ApplicationId = productionApplication.Id
 			};
 
 			return createPalletDTO;

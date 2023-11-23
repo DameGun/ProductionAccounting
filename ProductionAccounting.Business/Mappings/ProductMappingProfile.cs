@@ -12,6 +12,8 @@ namespace ProductionAccounting.Application.Mappings
 				.ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category));
 
 			CreateMap<CreateProductDTO, Product>();
+
+			CreateMap<UpdateProductDTO, Product>();
 		}
 	}
 }

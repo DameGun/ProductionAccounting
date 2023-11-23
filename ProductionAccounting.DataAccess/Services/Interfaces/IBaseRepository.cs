@@ -2,14 +2,15 @@
 
 namespace ProductionAccounting.DataAccess.Services.Interfaces
 {
-	public interface IBaseRepository<T, KEY>
+	public interface IBaseRepository<T>
 	{
-		Task<T?> CreateAsync(T entity);
-		Task<T?> UpdateAsync(T entity);
-		Task<T?> DeleteAsync(KEY id);
-		Task<T?> GetByIdAsync(KEY id);
-		Task<T?> GetFirstAsync(Expression<Func<T, bool>> expression);
-		Task<IEnumerable<T>?> GetAllByConditionAsync(Expression<Func<T, bool>> expression);
-		Task<IEnumerable<T>?> GetAllAsync();
+		void Create(T entity);
+		void Update(T entity);
+		void Delete(T entity);
+		IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges);
+		IQueryable<T> FindAll(bool trackChanges);
+		Task<T?> FindById(Expression<Func<T, bool>> expression, bool trackChanges);
+		IQueryable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties);
+		IQueryable<T> GetWithInclude(Func<T, bool> predicate, params Expression<Func<T, object>>[] includeProperties);
 	}
 }

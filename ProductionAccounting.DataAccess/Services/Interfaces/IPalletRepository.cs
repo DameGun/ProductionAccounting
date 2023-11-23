@@ -2,8 +2,9 @@
 
 namespace ProductionAccounting.DataAccess.Services.Interfaces
 {
-	public interface IPalletRepository : IBaseRepository<Pallet, Guid>
+	public interface IPalletRepository : IBaseRepository<Pallet>
 	{
-		Task<IEnumerable<Pallet>?> GetPalletsByInvoiceNo(string invoiceNo);
+		Task<Pallet> GetById(Guid id, bool trackChanges);
+		Task<IEnumerable<Pallet>?> GetPalletsByInvoiceNo(string invoiceNo, bool trackChanges);
 	}
 }

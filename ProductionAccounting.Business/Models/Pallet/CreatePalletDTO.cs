@@ -4,5 +4,6 @@
 	{
 		public double Weight { get; set; }
 		public int Boxes { get; set; }
+		public Guid ApplicationId { get; set; }
 	}
 }

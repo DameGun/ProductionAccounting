@@ -19,17 +19,14 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateProductAsync([FromBody] CreateProductDTO productDTO)
 		{
-			if (productDTO == null) return BadRequest("ProductDto object is null");
-
-			var createdProduct = await _service.ProductService.CreateProductAsync(productDTO);
-
+			var createdProduct = await _service.ProductService.CreateAsync(productDTO);
 			return CreatedAtRoute("ProductById", new { id = createdProduct.Id }, productDTO);
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetProductsAsync()
 		{
-			var products = await _service.ProductService.GetAllAsync();
+			var products = await _service.ProductService.GetAllAsync(trackChanges: true);
 			return Ok(products);
 		}
 
@@ -37,7 +34,7 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetProductAsync(int id)
 		{
-			var product = await _service.ProductService.GetProductAsync(id);
+			var product = await _service.ProductService.GetByIdAsync(id, trackChanges: true);
 			return Ok(product);
 		}
 
@@ -45,8 +42,25 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetProductsByCategoryIdAsync([Required]int categoryId)
 		{
-			var products = await _service.ProductService.GetProductsByCategoryId(categoryId);
+			var products = await _service.ProductService
+				.GetProductsByCategoryId(categoryId, categoryTrackChanges: false, productsTrackChanges: true);
 			return Ok(products);
+		}
+
+		[Route("{id:int}")]
+		[HttpPut]
+		public async Task<IActionResult> UpdateProductAsync(int id, [FromBody]UpdateProductDTO updateProductDTO)
+		{
+			var product = await _service.ProductService.UpdateAsync(id, updateProductDTO, true);
+			return Ok(product);
+		}
+
+		[Route("{id:int}")]
+		[HttpDelete]
+		public async Task<IActionResult> DeleteProductAsync(int id)
+		{
+			var product = await _service.ProductService.DeleteAsync(id, true);
+			return Ok(product);
 		}
 	}
 }

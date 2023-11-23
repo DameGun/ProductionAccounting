@@ -6,5 +6,6 @@
 		public int Packages { get; set; }
 		public Guid PalletBarcode { get; set; }
 		public int CurrentQuantity { get; set; }
+		public Guid ApplicationId { get; set; }
 	}
 }

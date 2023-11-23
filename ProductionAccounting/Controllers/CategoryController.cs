@@ -20,7 +20,7 @@ namespace ProductionAccounting.Api.Controllers
 		{
 			if (categoryDTO == null) return BadRequest("CategoryDTO object is null");
 
-			var createdCategory = await _service.CategoryService.CreateCategoryAsync(categoryDTO);
+			var createdCategory = await _service.CategoryService.CreateAsync(categoryDTO);
 
 			return CreatedAtRoute("CategoryById", new { id =  createdCategory.Id }, createdCategory);
 		}
@@ -28,7 +28,7 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetCategoriesAsync()
 		{
-			var categories = await _service.CategoryService.GetAllAsync();
+			var categories = await _service.CategoryService.GetAllAsync(trackChanges: false);
 			return Ok(categories);
 		}
 
@@ -36,7 +36,23 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetCategoryAsync(int id)
 		{
-			var category = await _service.CategoryService.GetCategoryAsync(id);
+			var category = await _service.CategoryService.GetByIdAsync(id, trackChanges: true);
+			return Ok(category);
+		}
+
+		[Route("{id:int}")]
+		[HttpDelete]
+		public async Task<IActionResult> DeleteCategoryAsync(int id)
+		{
+			var category = await _service.CategoryService.DeleteAsync(id, true);
+			return Ok(category);
+		}
+
+		[Route("{id:int}")]
+		[HttpPut]
+		public async Task<IActionResult> UpdateCategoryAsync(int id, [FromBody]UpdateCategoryDTO updateCategoryDTO)
+		{
+			var category = await _service.CategoryService.UpdateAsync(id, updateCategoryDTO, true);
 			return Ok(category);
 		}
 	}

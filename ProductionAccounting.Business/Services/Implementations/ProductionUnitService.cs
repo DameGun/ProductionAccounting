@@ -15,7 +15,7 @@ namespace ProductionAccounting.Application.Services.Implementations
 			_cache = cache;
 		}
 
-		public async Task<ActiveProductionResponse> CreateProductionUnitAsync(ActiveProductionRequest activeProductionRequest)
+		public async Task<ActiveProductionResponse> CreateProductionUnitAsync(ActiveProductionRequest activeProductionRequest, bool trackChanges)
 		{
 			if (activeProductionRequest.CurrentBoxQuantity == 0)
 			{

@@ -2,7 +2,6 @@
 using ProductionAccounting.Application.Models.Category;
 using ProductionAccounting.Application.Services.Interfaces;
 using ProductionAccounting.Core.Aggregations;
-using ProductionAccounting.Core.Exceptions;
 using ProductionAccounting.DataAccess.Services.Interfaces;
 
 namespace ProductionAccounting.Application.Services.Implementations
@@ -18,33 +17,55 @@ namespace ProductionAccounting.Application.Services.Implementations
 			_repository = repository;
 		}
 
-		public async Task<CategoryDTO> CreateCategoryAsync(CreateCategoryDTO categoryDTO)
+		public async Task<CategoryDTO> CreateAsync(CreateCategoryDTO categoryDTO)
 		{
 			var categoryEntity = _mapper.Map<Category>(categoryDTO);
 
-			var dbResponse = await _repository.CategoryRepository.CreateAsync(categoryEntity);
+			_repository.CategoryRepository.Create(categoryEntity);
+			await _repository.SaveAsync();
 
-			var productResponse = _mapper.Map<CategoryDTO>(dbResponse);
-
+			var productResponse = _mapper.Map<CategoryDTO>(categoryEntity);
 			return productResponse;
 		}
 
-		public async Task<IEnumerable<CategoryDTO>> GetAllAsync()
+		public async Task<CategoryDTO> DeleteAsync(int id, bool trackChanges)
 		{
-			var categories = await _repository.CategoryRepository.GetAllAsync();
+			var category = await _repository.CategoryRepository.FindById(c => c.Id == id, trackChanges);
+
+			_repository.CategoryRepository.Delete(category);
+			await _repository.SaveAsync();
+
+			var categoryResponse = _mapper.Map<CategoryDTO>(category);
+
+			return categoryResponse;
+		}
+
+		public async Task<IEnumerable<CategoryDTO>?> GetAllAsync(bool trackChanges)
+		{
+			var categories = await _repository.CategoryRepository.GetAllAsync(trackChanges);
 			var categoriesDTO = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
 
 			return categoriesDTO;
 		}
 
-		public async Task<CategoryDTO> GetCategoryAsync(int id)
+		public async Task<CategoryDTO?> GetByIdAsync(int id, bool trackChanges)
 		{
-			var category = await _repository.CategoryRepository.GetByIdAsync(id);
-			if (category == null) throw new NotFoundException();
+			var category = await _repository.CategoryRepository.FindById(c => c.Id == id, trackChanges);
 
 			var categoryDTO = _mapper.Map<CategoryDTO>(category);
-			
 			return categoryDTO;
+		}
+
+		public async Task<CategoryDTO> UpdateAsync(int id, UpdateCategoryDTO updateCategoryDTO, bool trackChanges)
+		{
+			var category = await _repository.CategoryRepository.FindById(c => c.Id == id, trackChanges);
+
+			_repository.CategoryRepository.Update(category);
+			await _repository.SaveAsync();
+
+			var categoryResponse = _mapper.Map<CategoryDTO>(category);
+
+			return categoryResponse;
 		}
 	}
 }

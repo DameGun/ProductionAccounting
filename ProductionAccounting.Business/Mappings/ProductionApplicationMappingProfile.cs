@@ -14,6 +14,8 @@ namespace ProductionAccounting.Application.Mappings
 				.ForMember(dest => dest.PackagesInBoxMax, opt => opt.MapFrom(src => src.BoxesInPallet));
 
 			CreateMap<CreateProductionApplicationDTO, ProductionApplication>();
+
+			CreateMap<UpdateProductionApplicationDTO, ProductionApplication>();
 		}
 	}
 }

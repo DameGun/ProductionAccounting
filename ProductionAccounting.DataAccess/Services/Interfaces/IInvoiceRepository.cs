@@ -2,7 +2,7 @@
 
 namespace ProductionAccounting.DataAccess.Services.Interfaces
 {
-	public interface IInvoiceRepository : IBaseRepository<Invoice, string>
+	public interface IInvoiceRepository : IBaseRepository<Invoice>
 	{
 	}
 }

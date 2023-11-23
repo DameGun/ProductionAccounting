@@ -21,7 +21,7 @@ namespace ProductionAccounting.Api.Controllers
 		{
 			if (productionApplicationDTO == null) return BadRequest("ProductionApplicationDTO object is null");
 
-			var createdApplication = await _service.ProductionApplicationService.CreateProductionApplicationAsync(productionApplicationDTO);
+			var createdApplication = await _service.ProductionApplicationService.CreateAsync(productionApplicationDTO, true);
 
 			return CreatedAtRoute("ApplicationById", new { id = createdApplication.Id }, createdApplication);
 		}
@@ -30,14 +30,15 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetApplicationsByProductIdAsync([Required]int productId)
 		{
-			var applications = await _service.ProductionApplicationService.GetApplicationsByProductIdAsync(productId);
+			var applications = await _service.ProductionApplicationService
+				.GetApplicationsByProductIdAsync(productId, trackChanges: true);
 			return Ok(applications);
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetAllAsync()
 		{
-			var applications = await _service.ProductionApplicationService.GetAllAsync();
+			var applications = await _service.ProductionApplicationService.GetAllAsync(trackChanges: true);
 			return Ok(applications);
 		}
 
@@ -45,7 +46,7 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetApplicationAsync(Guid id)
 		{
-			var application = await _service.ProductionApplicationService.GetApplicationAsync(id);
+			var application = await _service.ProductionApplicationService.GetByIdAsync(id, trackChanges: true);
 			return Ok(application);
 		}
 
@@ -53,8 +54,27 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpPost]
 		public async Task<IActionResult> SetApplicationActive(Guid id)
 		{
-			var application = await _service.ProductionApplicationService.SetApplicationActiveAsync(id);
+			var application = await _service.ProductionApplicationService
+				.SetApplicationActiveAsync(id, trackChanges: true);
 			return Ok(application);
+		}
+
+		[Route("{id:guid}")]
+		[HttpPut]
+		public async Task<IActionResult> UpdateProductionApplicationAsync(Guid id, 
+			[FromBody]UpdateProductionApplicationDTO updateProductionApplicationDTO)
+		{
+			var productionApplication = await _service.ProductionApplicationService
+				.UpdateAsync(id, updateProductionApplicationDTO, trackChanges: true);
+			return Ok(productionApplication);
+		}
+
+		[Route("{id:guid}")]
+		[HttpDelete]
+		public async Task<IActionResult> DeleteProductionApplicationAsync(Guid id)
+		{
+			var productionApplication = await _service.ProductionApplicationService.DeleteAsync(id, trackChanges: true);
+			return Ok(productionApplication);
 		}
 	}
 }

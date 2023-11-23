@@ -8,9 +8,12 @@ namespace ProductionAccounting.Application.Mappings
 	{
 		public BoxMappingProfile()
 		{
-			CreateMap<Box, BoxDTO>();
+			CreateMap<Box, BoxDTO>()
+				.ForMember(dest => dest.ProductionApplication, opt => opt.MapFrom(src => src.ProductionApplication));
 
 			CreateMap<CreateBoxDTO, Box>();
+
+			CreateMap<UpdateBoxDTO, Box>();
 		}
 	}
 }

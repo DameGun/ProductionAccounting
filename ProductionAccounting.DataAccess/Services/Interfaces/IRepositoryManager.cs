@@ -9,5 +9,6 @@
         IInvoiceRepository InvoiceRepository { get; }
         IPalletRepository PalletRepository { get; }
         IProductUnitRepository ProductUnitRepository { get; }
+        Task SaveAsync();
     }
 }

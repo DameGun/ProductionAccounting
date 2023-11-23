@@ -8,9 +8,12 @@ namespace ProductionAccounting.Application.Mappings
 	{
 		public PalletMappingProfile()
 		{
-			CreateMap<Pallet, PalletDTO>();
+			CreateMap<Pallet, PalletDTO>()
+				.ForMember(dest => dest.ProductionApplication, opt => opt.MapFrom(src => src.ProductionApplication));
 
 			CreateMap<CreatePalletDTO, Pallet>();
+
+			CreateMap<UpdatePalletDTO, Pallet>();
 		}
 	}
 }

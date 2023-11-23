@@ -26,6 +26,9 @@ namespace ProductionAccounting.DataAccess.Configurations
 			builder
 				.Property(b => b.InvoiceNo)
 				.HasColumnName("invoice_no");
+			builder
+				.Property(b => b.ApplicationId)
+				.HasColumnName("application_id");
 
 			builder
 				.HasKey(b => b.Barcode);

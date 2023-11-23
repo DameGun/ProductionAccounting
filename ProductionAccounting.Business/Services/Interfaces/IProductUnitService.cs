@@ -2,7 +2,10 @@
 
 namespace ProductionAccounting.Application.Services.Interfaces
 {
-    public interface IProductUnitService : IBaseService<ProductUnitDTO, CreateProductUnitDTO, Guid>
+    public interface IProductUnitService
     {
+        Task<ProductUnitDTO> CreateAsync(CreateProductUnitDTO createProductUnitDTO);
+        Task<ProductUnitDTO> GetByIdAsync(Guid id, bool trackChanges);
+        Task<IEnumerable<ProductUnitDTO>?> GetProductUnitsByBoxIdAsync(Guid boxId, bool boxTrackChanges, bool unitsTrackChanges);
     }
 }

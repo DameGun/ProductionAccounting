@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace ProductionAccounting.DataAccess.Services.Repository
 {
-	public abstract class GenericRepository<T, KEY> : IBaseRepository<T, KEY> where T : class
+	public abstract class GenericRepository<T> : IBaseRepository<T> where T : class
 	{
 		private AppDbContext _appDbContext;
 
@@ -13,42 +13,41 @@ namespace ProductionAccounting.DataAccess.Services.Repository
 			_appDbContext = appDbContext;
 		}
 
-		public async Task<T?> CreateAsync(T entity)
+		public void Create(T entity) => _appDbContext.Set<T>().Add(entity);
+
+		public void Delete(T entity) => _appDbContext.Set<T>().Remove(entity);
+
+		public void Update(T entity) => _appDbContext.Set<T>().Update(entity);
+
+		public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
+			!trackChanges ?
+				_appDbContext.Set<T>()
+					.Where(expression)
+					.AsNoTracking() :
+				_appDbContext.Set<T>()
+					.Where(expression);
+
+		public IQueryable<T> FindAll(bool trackChanges) =>
+			!trackChanges ?
+				_appDbContext.Set<T>()
+					.AsNoTracking() :
+				_appDbContext.Set<T>();
+
+		public async Task<T?> FindById(Expression<Func<T, bool>> expression, bool trackChanges) =>
+				await FindByCondition(expression, trackChanges).SingleOrDefaultAsync();
+				
+		public IQueryable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties) => 
+			Include(includeProperties);
+
+		public IQueryable<T> GetWithInclude(Func<T, bool> predicate, params Expression<Func<T, object>>[] includeProperties)
 		{
-			await _appDbContext.Set<T>().AddAsync(entity);
-			await _appDbContext.SaveChangesAsync();
-			return entity;
+			return Include(includeProperties).Where(predicate).AsQueryable();
 		}
 
-		public async Task<T?> DeleteAsync(KEY id)
+		private IQueryable<T> Include(params Expression<Func<T, object>>[] includeProperties)
 		{
-			var entity = await GetByIdAsync(id);
-			if (entity != null)
-			{
-				_appDbContext.Set<T>().Remove(entity);
-				await _appDbContext.SaveChangesAsync();
-				return entity;
-			}
-			return null;
-		}
-
-		public async Task<IEnumerable<T>?> GetAllByConditionAsync(Expression<Func<T, bool>> expression) => 
-			await _appDbContext.Set<T>().Where(expression).ToListAsync();
-
-		public async Task<T?> GetFirstAsync(Expression<Func<T, bool>> expression) =>
-			await _appDbContext.Set<T>().Where(expression).FirstOrDefaultAsync();
-
-		public async Task<IEnumerable<T>?> GetAllAsync() =>
-			await _appDbContext.Set<T>().ToListAsync();
-
-		public async Task<T?> GetByIdAsync(KEY id) =>
-			await _appDbContext.Set<T>().FindAsync(id);
-
-		public async Task<T?> UpdateAsync(T entity)
-		{
-			_appDbContext.Entry(entity).State = EntityState.Modified;
-			await _appDbContext.SaveChangesAsync();
-			return entity;
+			IQueryable<T> query = _appDbContext.Set<T>().AsNoTracking();
+			return includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
 		}
 	}
 }
