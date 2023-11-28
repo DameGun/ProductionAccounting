@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductionAccounting.Application.Models.ProductionApplication;
 using ProductionAccounting.Application.Services.Interfaces;
+using ProductionAccounting.Core.Shared;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProductionAccounting.Api.Controllers
@@ -19,8 +20,6 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateProductionApplicationAsync([FromBody]CreateProductionApplicationDTO productionApplicationDTO)
 		{
-			if (productionApplicationDTO == null) return BadRequest("ProductionApplicationDTO object is null");
-
 			var createdApplication = await _service.ProductionApplicationService.CreateAsync(productionApplicationDTO, true);
 
 			return CreatedAtRoute("ApplicationById", new { id = createdApplication.Id }, createdApplication);
@@ -28,17 +27,17 @@ namespace ProductionAccounting.Api.Controllers
 
 		[Route("product")]
 		[HttpGet]
-		public async Task<IActionResult> GetApplicationsByProductIdAsync([Required]int productId)
+		public async Task<IActionResult> GetApplicationsByProductIdAsync([Required]int productId, [FromQuery]RequestParameters requestParameters)
 		{
 			var applications = await _service.ProductionApplicationService
-				.GetApplicationsByProductIdAsync(productId, trackChanges: true);
+				.GetApplicationsByProductIdAsync(productId, requestParameters, trackChanges: true);
 			return Ok(applications);
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAllAsync()
+		public async Task<IActionResult> GetAllAsync([FromQuery]RequestParameters requestParameters)
 		{
-			var applications = await _service.ProductionApplicationService.GetAllAsync(trackChanges: true);
+			var applications = await _service.ProductionApplicationService.GetAllAsync(requestParameters, trackChanges: true);
 			return Ok(applications);
 		}
 

@@ -1,4 +1,6 @@
-﻿using ProductionAccounting.Application.Models.ProductionApplication;
+﻿using ProductionAccounting.Application.Models;
+using ProductionAccounting.Application.Models.ProductionApplication;
+using ProductionAccounting.Core.Shared;
 
 namespace ProductionAccounting.Application.Services.Interfaces
 {
@@ -8,8 +10,9 @@ namespace ProductionAccounting.Application.Services.Interfaces
 		Task<ProductionApplicationDTO> UpdateAsync(Guid id, UpdateProductionApplicationDTO entity, bool trackChanges);
 		Task<ProductionApplicationDTO> DeleteAsync(Guid id, bool trackChanges);
 		Task<ProductionApplicationDTO?> GetByIdAsync(Guid id, bool trackChanges);
-		Task<IEnumerable<ProductionApplicationDTO>?> GetAllAsync(bool trackChanges);
-		Task<IEnumerable<ProductionApplicationDTO>> GetApplicationsByProductIdAsync(int productId, bool trackChanges);
+		Task<PagedResponse<ProductionApplicationDTO>> GetAllAsync(RequestParameters requestParameters, bool trackChanges);
+		Task<PagedResponse<ProductionApplicationDTO>> GetApplicationsByProductIdAsync(int productId, 
+			RequestParameters requestParameters, bool trackChanges);
 		Task<ProductionApplicationDTO> SetApplicationActiveAsync(Guid applicationId, bool trackChanges);
 	}
 }

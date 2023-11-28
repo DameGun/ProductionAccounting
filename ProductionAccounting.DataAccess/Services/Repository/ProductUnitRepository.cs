@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductionAccounting.Core.Entities;
+using ProductionAccounting.Core.Shared;
+using ProductionAccounting.Core.Shared.RequestFeatures;
 using ProductionAccounting.DataAccess.Services.Interfaces;
 
 namespace ProductionAccounting.DataAccess.Services.Repository
@@ -8,9 +10,11 @@ namespace ProductionAccounting.DataAccess.Services.Repository
 	{
 		public ProductUnitRepository(AppDbContext dbContext) : base(dbContext) { }
 
-		public async Task<IEnumerable<ProductUnit>> GetUnitsByBoxBarcode(Guid boxBarcode, bool trackChanges)
+		public async Task<PagedList<ProductUnit>> GetUnitsByBoxBarcode(Guid boxBarcode, RequestParameters requestParameters, bool trackChanges)
 		{
-			return await FindByCondition(u => u.BoxBarcode == boxBarcode, trackChanges).ToListAsync();
+			var units = await FindByCondition(u => u.BoxBarcode == boxBarcode, trackChanges).ToListAsync();
+
+			return PagedList<ProductUnit>.ToPagingResponse(units, requestParameters.PageNumber, requestParameters.PageSize);
 		}
 	}
 }

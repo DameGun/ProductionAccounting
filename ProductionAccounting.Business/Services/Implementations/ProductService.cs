@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using ProductionAccounting.Application.Models;
 using ProductionAccounting.Application.Models.Product;
 using ProductionAccounting.Application.Services.Interfaces;
 using ProductionAccounting.Core.Aggregations;
+using ProductionAccounting.Core.Shared;
 using ProductionAccounting.DataAccess.Services.Interfaces;
 
 namespace ProductionAccounting.Application.Services.Implementations
@@ -43,12 +45,16 @@ namespace ProductionAccounting.Application.Services.Implementations
 			return productResponse;
 		}
 
-		public async Task<IEnumerable<ProductDTO>?> GetAllAsync(bool trackChanges)
+		public async Task<PagedResponse<ProductDTO>> GetAllAsync(RequestParameters requestParameters, bool trackChanges)
 		{
-			var products = await _repository.ProductRepository.GetAllAsync(trackChanges);
-			var productsDTO = _mapper.Map<IEnumerable<ProductDTO>>(products);
+			var productsWithMetaData = await _repository.ProductRepository.GetAllAsync(requestParameters, trackChanges);
+			var productsDTO = _mapper.Map<IEnumerable<ProductDTO>>(productsWithMetaData);
 
-			return productsDTO;
+			return new PagedResponse<ProductDTO>
+			{
+				Data = productsDTO,
+				MetaData = productsWithMetaData.MetaData
+			};
 		}
 
 		public async Task<ProductDTO> GetByIdAsync(int productId, bool trackChanges)
@@ -60,16 +66,21 @@ namespace ProductionAccounting.Application.Services.Implementations
 			return productDTO;
 		}
 
-		public async Task<IEnumerable<ProductDTO>> GetProductsByCategoryId(int categoryId, bool categoryTrackChanges, bool productsTrackChanges)
+		public async Task<PagedResponse<ProductDTO>> GetProductsByCategoryId(int categoryId, 
+			RequestParameters requestParameters, bool categoryTrackChanges, bool productsTrackChanges)
 		{
 
 			var category = await _repository.CategoryRepository.FindById(c => c.Id == categoryId, categoryTrackChanges);
 
-			var products = await _repository.ProductRepository.GetProductsByCategoryAsync(categoryId, productsTrackChanges);
+			var productsWithMetaData = await _repository.ProductRepository.GetProductsByCategoryAsync(categoryId, requestParameters, productsTrackChanges);
 
-			var productsDTO = _mapper.Map<IEnumerable<ProductDTO>>(products);
+			var productsDTO = _mapper.Map<IEnumerable<ProductDTO>>(productsWithMetaData);
 
-			return productsDTO;
+			return new PagedResponse<ProductDTO>
+			{
+				Data = productsDTO,
+				MetaData = productsWithMetaData.MetaData
+			};
 		}
 
 		public async Task<ProductDTO> UpdateAsync(int id, UpdateProductDTO entity, bool trackChanges)

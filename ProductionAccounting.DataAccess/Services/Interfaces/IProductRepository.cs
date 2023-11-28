@@ -1,10 +1,12 @@
 ﻿using ProductionAccounting.Core.Aggregations;
+using ProductionAccounting.Core.Shared;
+using ProductionAccounting.Core.Shared.RequestFeatures;
 
 namespace ProductionAccounting.DataAccess.Services.Interfaces
 {
 	public interface IProductRepository : IBaseRepository<Product>
 	{
-		Task<IEnumerable<Product>> GetAllAsync(bool trackChanges);
-		Task<IEnumerable<Product>?> GetProductsByCategoryAsync(int categoryId, bool trackChanges);
+		Task<PagedList<Product>> GetAllAsync(RequestParameters requestParameters, bool trackChanges);
+		Task<PagedList<Product>> GetProductsByCategoryAsync(int categoryId, RequestParameters requestParameters,bool trackChanges);
 	}
 }

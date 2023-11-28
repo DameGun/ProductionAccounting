@@ -39,6 +39,11 @@ namespace ProductionAccounting.DataAccess.Configurations
 			//	.HasForeignKey(b => b.PalletBarcode);
 
 			builder
+				.HasOne(b => b.ProductionApplication)
+				.WithMany(a => a.Boxes)
+				.HasForeignKey(b => b.ApplicationId);
+
+			builder
 				.HasOne(b => b.Invoice)
 				.WithMany(i => i.Boxes)
 				.HasForeignKey(b => b.InvoiceNo);

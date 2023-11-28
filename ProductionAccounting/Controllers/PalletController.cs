@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductionAccounting.Application.Models.Pallet;
 using ProductionAccounting.Application.Services.Interfaces;
+using ProductionAccounting.Core.Shared;
 
 namespace ProductionAccounting.Api.Controllers
 {
@@ -39,15 +40,13 @@ namespace ProductionAccounting.Api.Controllers
 			return Ok(pallet);
 		}
 
-		// Implement paging with requestParameters
-
-		//[Route("{id:guid}/boxes")]
-		//[HttpGet]
-		//public async Task<IActionResult> GetBoxesAsync(Guid id)
-		//{
-		//	var boxes = await _serviceManager.BoxService.GetBoxesByPalletIdAsync(id);
-
-		//	return Ok(boxes);
-		//}
+	    [Route("{id:guid}/boxes")]
+		[HttpGet]
+		public async Task<IActionResult> GetBoxesAsync(Guid id, [FromQuery]RequestParameters requestParameters)
+		{
+			var boxes = await _serviceManager.BoxService
+				.GetBoxesByPalletIdAsync(id, requestParameters, palletTrackChanges: false, boxTrackChanges: true);
+			return Ok(boxes);
+		}
 	}
 }

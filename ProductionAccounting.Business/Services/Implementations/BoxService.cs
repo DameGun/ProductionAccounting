@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ProductionAccounting.Application.Models;
 using ProductionAccounting.Application.Models.Box;
 using ProductionAccounting.Application.Services.Interfaces;
 using ProductionAccounting.Core.Entities;
@@ -42,16 +43,20 @@ namespace ProductionAccounting.Application.Services.Implementations
 			return boxResponse;
 		}
 
-		public async Task<IEnumerable<BoxDTO>?> GetBoxesByPalletIdAsync(Guid palletId, 
+		public async Task<PagedResponse<BoxDTO>> GetBoxesByPalletIdAsync(Guid palletId, 
 			RequestParameters requestParameters, bool palletTrackChanges, bool boxTrackChanges)
 		{
 			var pallet = await _repositoryManager.PalletRepository.FindById(p => p.Barcode == palletId, palletTrackChanges);
 
-			var boxes = await _repositoryManager.BoxRepository.GetBoxesByPalletBarcode(palletId, boxTrackChanges, requestParameters);
+			var boxesWithMetaData = await _repositoryManager.BoxRepository.GetBoxesByPalletBarcode(palletId, requestParameters, boxTrackChanges);
 
-			var boxesResponse = _mapper.Map<IEnumerable<BoxDTO>>(boxes);
+			var boxesResponse = _mapper.Map<IEnumerable<BoxDTO>>(boxesWithMetaData);
 
-			return boxesResponse;
+			return new PagedResponse<BoxDTO>
+			{
+				Data = boxesResponse,
+				MetaData = boxesWithMetaData.MetaData
+			};
 		}
 
 		public async Task<BoxDTO?> GetByIdAsync(Guid id, bool trackChanges)

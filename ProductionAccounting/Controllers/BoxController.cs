@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductionAccounting.Application.Models.Box;
 using ProductionAccounting.Application.Services.Interfaces;
+using ProductionAccounting.Core.Shared;
 
 namespace ProductionAccounting.Api.Controllers
 {
@@ -41,11 +42,11 @@ namespace ProductionAccounting.Api.Controllers
 
 		[Route("{id:guid}/productUnits")]
 		[HttpGet]
-		public async Task<IActionResult> GetProductUnitsAsync(Guid id)
+		public async Task<IActionResult> GetProductUnitsAsync(Guid id, [FromQuery]RequestParameters requestParameters)
 		{
-			var productsUnits = await _serviceManager.ProductUnitService
-				.GetProductUnitsByBoxIdAsync(id, boxTrackChanges: false, unitsTrackChanges: true);
-			return Ok(productsUnits);
+			var pagedResponse = await _serviceManager.ProductUnitService
+				.GetProductUnitsByBoxIdAsync(id, requestParameters , boxTrackChanges: false, unitsTrackChanges: true);
+			return Ok(pagedResponse);
 		}
 	}
 }

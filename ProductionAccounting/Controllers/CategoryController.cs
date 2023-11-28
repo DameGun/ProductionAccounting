@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductionAccounting.Application.Models.Category;
 using ProductionAccounting.Application.Services.Interfaces;
+using ProductionAccounting.Core.Shared;
 
 namespace ProductionAccounting.Api.Controllers
 {
@@ -54,6 +55,15 @@ namespace ProductionAccounting.Api.Controllers
 		{
 			var category = await _service.CategoryService.UpdateAsync(id, updateCategoryDTO, true);
 			return Ok(category);
+		}
+
+		[Route("{id:int}/products")]
+		[HttpGet]
+		public async Task<IActionResult> GetProductsByCategoryIdAsync(int id, [FromQuery] RequestParameters requestParameters)
+		{
+			var products = await _service.ProductService
+				.GetProductsByCategoryId(id, requestParameters, categoryTrackChanges: false, productsTrackChanges: true);
+			return Ok(products);
 		}
 	}
 }

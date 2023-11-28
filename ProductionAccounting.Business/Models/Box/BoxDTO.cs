@@ -9,7 +9,7 @@ namespace ProductionAccounting.Application.Models.Box
 		public int Packages { get; set; }
 		public Guid PalletBarcode { get; set; }
 		public string? InvoiceNo { get; set; }
-		public Guid ApplicationId { get; set; }
+		public Guid? ApplicationId { get; set; }
 
 		public ProductionApplicationDTO? ProductionApplication { get; set; }
 	}

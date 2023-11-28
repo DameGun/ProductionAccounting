@@ -1,4 +1,5 @@
-﻿using ProductionAccounting.Application.Models.Box;
+﻿using ProductionAccounting.Application.Models;
+using ProductionAccounting.Application.Models.Box;
 using ProductionAccounting.Core.Shared;
 
 namespace ProductionAccounting.Application.Services.Interfaces
@@ -9,7 +10,7 @@ namespace ProductionAccounting.Application.Services.Interfaces
 		Task<BoxDTO> UpdateAsync(Guid id, UpdateBoxDTO updateBoxDTO, bool trackChanges);
 		Task<BoxDTO> DeleteAsync(Guid id, bool trackChanges);
 		Task<BoxDTO?> GetByIdAsync(Guid id, bool trackChanges);
-		Task<IEnumerable<BoxDTO>?> GetBoxesByPalletIdAsync(Guid palletId, 
+		Task<PagedResponse<BoxDTO>> GetBoxesByPalletIdAsync(Guid palletId, 
 			RequestParameters requestParameters, bool palletTrackChanges, bool boxTrackChanges);
 	}
 }

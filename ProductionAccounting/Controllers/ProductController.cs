@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductionAccounting.Application.Models.Product;
 using ProductionAccounting.Application.Services.Interfaces;
+using ProductionAccounting.Core.Shared;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProductionAccounting.Api.Controllers
@@ -24,9 +25,9 @@ namespace ProductionAccounting.Api.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetProductsAsync()
+		public async Task<IActionResult> GetProductsAsync([FromQuery]RequestParameters requestParameters)
 		{
-			var products = await _service.ProductService.GetAllAsync(trackChanges: true);
+			var products = await _service.ProductService.GetAllAsync(requestParameters, trackChanges: true);
 			return Ok(products);
 		}
 
@@ -36,15 +37,6 @@ namespace ProductionAccounting.Api.Controllers
 		{
 			var product = await _service.ProductService.GetByIdAsync(id, trackChanges: true);
 			return Ok(product);
-		}
-
-		[Route("category")]
-		[HttpGet]
-		public async Task<IActionResult> GetProductsByCategoryIdAsync([Required]int categoryId)
-		{
-			var products = await _service.ProductService
-				.GetProductsByCategoryId(categoryId, categoryTrackChanges: false, productsTrackChanges: true);
-			return Ok(products);
 		}
 
 		[Route("{id:int}")]

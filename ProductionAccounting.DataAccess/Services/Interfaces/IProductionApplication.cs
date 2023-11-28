@@ -1,10 +1,12 @@
 ﻿using ProductionAccounting.Core.Entities;
+using ProductionAccounting.Core.Shared;
+using ProductionAccounting.Core.Shared.RequestFeatures;
 
 namespace ProductionAccounting.DataAccess.Services.Interfaces
 {
 	public interface IProductionApplication : IBaseRepository<ProductionApplication>
 	{
-		Task<IEnumerable<ProductionApplication>> GetAllAsync(bool trackChanges);
-		Task<IEnumerable<ProductionApplication>?> GetApplicationsByProductId(int productId, bool trackChanges);
+		Task<PagedList<ProductionApplication>> GetAllAsync(RequestParameters requestParameters, bool trackChanges);
+		Task<PagedList<ProductionApplication>?> GetApplicationsByProductId(int productId, RequestParameters requestParameters, bool trackChanges);
 	}
 }

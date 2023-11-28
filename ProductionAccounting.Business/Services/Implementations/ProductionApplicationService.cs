@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Caching.Distributed;
+using ProductionAccounting.Application.Models;
 using ProductionAccounting.Application.Models.ProductionApplication;
 using ProductionAccounting.Application.Services.Interfaces;
 using ProductionAccounting.Core.Entities;
 using ProductionAccounting.Core.Exceptions;
+using ProductionAccounting.Core.Shared;
 using ProductionAccounting.DataAccess.Services.Interfaces;
 using System.Text.Json;
 
@@ -22,22 +24,31 @@ namespace ProductionAccounting.Application.Services.Implementations
 			_cache = cache;
 		}
 
-		public async Task<IEnumerable<ProductionApplicationDTO>> GetApplicationsByProductIdAsync(int productId, bool trackChanges)
+		public async Task<PagedResponse<ProductionApplicationDTO>> GetApplicationsByProductIdAsync(int productId, 
+			RequestParameters requestParameters, bool trackChanges)
 		{
 			var product = await _repositoryManager.ProductRepository.FindById(p => p.Id == productId, trackChanges: false);
 
-			var applications = await _repositoryManager.ProductionApplication.GetApplicationsByProductId(productId, trackChanges);
-			var applicationsDTO = _mapper.Map<IEnumerable<ProductionApplicationDTO>>(applications);
+			var applicationsWithMetaData = await _repositoryManager.ProductionApplication
+				.GetApplicationsByProductId(productId, requestParameters, trackChanges);
+			var applicationsDTO = _mapper.Map<IEnumerable<ProductionApplicationDTO>>(applicationsWithMetaData);
 
-			return applicationsDTO;
+			return new PagedResponse<ProductionApplicationDTO> { 
+				Data = applicationsDTO,
+				MetaData = applicationsWithMetaData.MetaData
+			};
 		}
 
-		public async Task<IEnumerable<ProductionApplicationDTO>?> GetAllAsync(bool trackChanges)
+		public async Task<PagedResponse<ProductionApplicationDTO>> GetAllAsync(RequestParameters requestParameters, bool trackChanges)
 		{
-			var applications = await _repositoryManager.ProductionApplication.GetAllAsync(trackChanges);
-			var applicationDTO = _mapper.Map<IEnumerable<ProductionApplicationDTO>>(applications);
-			
-			return applicationDTO;
+			var applicationsWithMetaData = await _repositoryManager.ProductionApplication.GetAllAsync(requestParameters, trackChanges);
+			var applicationDTO = _mapper.Map<IEnumerable<ProductionApplicationDTO>>(applicationsWithMetaData);
+
+			return new PagedResponse<ProductionApplicationDTO>
+			{
+				Data = applicationDTO,
+				MetaData = applicationsWithMetaData.MetaData
+			};
 		}
 
 		public async Task<ProductionApplicationDTO?> GetByIdAsync(Guid applicationId, bool trackChanges)

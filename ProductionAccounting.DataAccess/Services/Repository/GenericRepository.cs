@@ -49,5 +49,12 @@ namespace ProductionAccounting.DataAccess.Services.Repository
 			IQueryable<T> query = _appDbContext.Set<T>().AsNoTracking();
 			return includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
 		}
+
+		//public IQueryable<T> GetWithPaging(Expression<Func<T, bool>> expression, RequestParameters requestParameters, bool trackChanges)
+		//{
+		//	return FindByCondition(expression, trackChanges)
+		//			.Skip((requestParameters.PageNumber - 1) * requestParameters.PageSize)
+		//			.Take(requestParameters.PageSize);
+		//}
 	}
 }

@@ -14,5 +14,7 @@ namespace ProductionAccounting.Core.Entities
 		public ApplicationState CurrentApplicationState { get; set; }
 
 		public Product Product { get; set; }
+		public List<Box>? Boxes { get; set; }
+		public List<Pallet>? Pallets { get; set; }
 	}
 }

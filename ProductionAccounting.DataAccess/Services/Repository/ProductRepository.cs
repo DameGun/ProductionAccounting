@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductionAccounting.Core.Aggregations;
+using ProductionAccounting.Core.Shared;
+using ProductionAccounting.Core.Shared.RequestFeatures;
 using ProductionAccounting.DataAccess.Services.Interfaces;
 
 namespace ProductionAccounting.DataAccess.Services.Repository
@@ -8,14 +10,18 @@ namespace ProductionAccounting.DataAccess.Services.Repository
 	{
 		public ProductRepository(AppDbContext appDbContext) : base(appDbContext) { }
 
-		public async Task<IEnumerable<Product>> GetAllAsync(bool trackChanges)
+		public async Task<PagedList<Product>> GetAllAsync(RequestParameters requestParameters, bool trackChanges)
 		{
-			return await FindAll(trackChanges).ToListAsync();
+			var products = await FindAll(trackChanges).ToListAsync();
+
+			return PagedList<Product>.ToPagingResponse(products, requestParameters.PageNumber, requestParameters.PageSize);
 		}
 
-		public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId, bool trackChanges)
+		public async Task<PagedList<Product>> GetProductsByCategoryAsync(int categoryId, RequestParameters requestParameters, bool trackChanges)
 		{
-			return await FindByCondition(p => p.CategoryId == categoryId, trackChanges).ToListAsync();
+			var products = await FindByCondition(p => p.CategoryId == categoryId, trackChanges).ToListAsync();
+
+			return PagedList<Product>.ToPagingResponse(products, requestParameters.PageNumber, requestParameters.PageSize);
 		}
 	}
 }

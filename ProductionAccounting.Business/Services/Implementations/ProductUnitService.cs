@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using ProductionAccounting.Application.Models;
 using ProductionAccounting.Application.Models.ProductUnit;
 using ProductionAccounting.Application.Services.Interfaces;
 using ProductionAccounting.Core.Entities;
+using ProductionAccounting.Core.Shared;
 using ProductionAccounting.DataAccess.Services.Interfaces;
 
 namespace ProductionAccounting.Application.Services.Implementations
@@ -40,15 +42,21 @@ namespace ProductionAccounting.Application.Services.Implementations
 			return productUnitDTO;
 		}
 
-		public async Task<IEnumerable<ProductUnitDTO>?> GetProductUnitsByBoxIdAsync(Guid boxId, bool boxTrackChanges, bool unitsTrackChanges)
+		public async Task<PagedResponse<ProductUnitDTO>> GetProductUnitsByBoxIdAsync(Guid boxId, 
+			RequestParameters requestParameters, bool boxTrackChanges, bool unitsTrackChanges)
 		{
 			var box = await _repositoryManager.BoxRepository.FindById(b => b.Barcode == boxId, boxTrackChanges);
 
-			var productUnits = await _repositoryManager.ProductUnitRepository.GetUnitsByBoxBarcode(boxId, unitsTrackChanges);
+			var productUnitsWithMetadata = await _repositoryManager.ProductUnitRepository
+				.GetUnitsByBoxBarcode(boxId, requestParameters, unitsTrackChanges);
 
-			var productUnitsResponse = _mapper.Map<IEnumerable<ProductUnitDTO>>(productUnits);
+			var productUnitsResponse = _mapper.Map<IEnumerable<ProductUnitDTO>>(productUnitsWithMetadata);
 
-			return productUnitsResponse;
+			return new PagedResponse<ProductUnitDTO>
+			{
+				Data = productUnitsResponse,
+				MetaData = productUnitsWithMetadata.MetaData
+			};
 		}
 	}
 }

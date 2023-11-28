@@ -1,4 +1,6 @@
-﻿using ProductionAccounting.Application.Models.ProductUnit;
+﻿using ProductionAccounting.Application.Models;
+using ProductionAccounting.Application.Models.ProductUnit;
+using ProductionAccounting.Core.Shared;
 
 namespace ProductionAccounting.Application.Services.Interfaces
 {
@@ -6,6 +8,7 @@ namespace ProductionAccounting.Application.Services.Interfaces
     {
         Task<ProductUnitDTO> CreateAsync(CreateProductUnitDTO createProductUnitDTO);
         Task<ProductUnitDTO> GetByIdAsync(Guid id, bool trackChanges);
-        Task<IEnumerable<ProductUnitDTO>?> GetProductUnitsByBoxIdAsync(Guid boxId, bool boxTrackChanges, bool unitsTrackChanges);
+        Task<PagedResponse<ProductUnitDTO>> GetProductUnitsByBoxIdAsync(Guid boxId, 
+            RequestParameters requestParameters, bool boxTrackChanges, bool unitsTrackChanges);
     }
 }
