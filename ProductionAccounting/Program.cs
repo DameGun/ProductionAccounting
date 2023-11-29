@@ -10,6 +10,8 @@ LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nl
 
 builder.Services.ConfigureLoggerService();
 
+builder.Services.AddCors();
+
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -46,6 +48,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
 
 app.UseAuthorization();
 
