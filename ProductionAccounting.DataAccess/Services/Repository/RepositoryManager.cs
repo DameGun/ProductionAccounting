@@ -15,6 +15,7 @@ namespace ProductionAccounting.DataAccess.Services.Repository
 
 		public RepositoryManager(AppDbContext appDbContext)
 		{
+			_appDbContext = appDbContext;
 			_productionApplicationRepository = new Lazy<IProductionApplication>(() => new ProductionApplicationRepository(appDbContext));
 			_productRepository = new Lazy<IProductRepository>(() => new ProductRepository(appDbContext));
 			_boxRepository = new Lazy<IBoxRepository>(() => new BoxRepository(appDbContext));

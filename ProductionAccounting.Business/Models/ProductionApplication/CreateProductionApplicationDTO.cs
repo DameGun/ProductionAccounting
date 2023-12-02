@@ -9,6 +9,6 @@ namespace ProductionAccounting.Application.Models.ProductionApplication
 		public int BoxesInPallet { get; set; }
 		public DateTime ProdDate { get; set; }
 		public DateTime ExpDate { get; set; }
-		public ApplicationState CurrentApplicationState { get; set; }
+		public int CurrentApplicationState { get; set; }
 	}
 }

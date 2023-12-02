@@ -1,4 +1,6 @@
-﻿using ProductionAccounting.Application.Models.Category;
+﻿using ProductionAccounting.Application.Models;
+using ProductionAccounting.Application.Models.Category;
+using ProductionAccounting.Core.Shared;
 
 namespace ProductionAccounting.Application.Services.Interfaces
 {
@@ -8,6 +10,6 @@ namespace ProductionAccounting.Application.Services.Interfaces
 		Task<CategoryDTO> UpdateAsync(int id, UpdateCategoryDTO updateCategoryDTO, bool trackChanges);
 		Task<CategoryDTO> DeleteAsync(int id, bool trackChanges);
 		Task<CategoryDTO?> GetByIdAsync(int id, bool trackChanges);
-		Task<IEnumerable<CategoryDTO>?> GetAllAsync(bool trackChanges);
+		Task<PagedResponse<CategoryDTO>> GetAllAsync(RequestParameters requestParameters, bool trackChanges);
 	}
 }

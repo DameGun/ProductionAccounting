@@ -8,7 +8,17 @@ import {
 import RootPage from './routes/RootPage'; 
 import ErrorPage from './routes/ErrorPage';
 import ApplicationsPage from './routes/ApplicationsPage';
-import { getApplications } from './utils/api';
+import { getApplications, getCategories, getProducts } from './utils/api';
+import ProductsPage from './routes/ProductsPage';
+import CategoriesPage from './routes/CategoriesPage';
+import CreateApplicationPage from './routes/CreateApplicationPage';
+
+async function tableLoaderWithPagination (apiCall, request) {
+  const url = new URL(request.url);
+  const pageNumber = url.searchParams.get('PageNumber');
+  const pageSize = url.searchParams.get('PageSize');
+  return await apiCall(pageNumber, pageSize);
+}
 
 const router = createBrowserRouter([
   {
@@ -19,12 +29,24 @@ const router = createBrowserRouter([
       {
         path: "applications",
         element: <ApplicationsPage />,
-        loader: async ({ request }) => {
-          const url = new URL(request.url);
-          const pageNumber = url.searchParams.get('PageNumber');
-          const pageSize = url.searchParams.get('PageSize');
-          return await getApplications(pageNumber, pageSize);
+        loader: async ({ request }) => await tableLoaderWithPagination(getApplications, request)
+      },
+      {
+        path: "applications/create",
+        element: <CreateApplicationPage />,
+        loader: async () => {
+          return await getProducts(1, 1000);
         }
+      },
+      {
+        path: "products",
+        element: <ProductsPage />,
+        loader: async ({ request }) => await tableLoaderWithPagination(getProducts, request)
+      },
+      {
+        path: "categories",
+        element: <CategoriesPage />,
+        loader: async ({ request }) => await tableLoaderWithPagination(getCategories, request)
       }
     ]
   }

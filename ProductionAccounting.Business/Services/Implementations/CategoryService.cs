@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using ProductionAccounting.Application.Models;
 using ProductionAccounting.Application.Models.Category;
 using ProductionAccounting.Application.Services.Interfaces;
 using ProductionAccounting.Core.Aggregations;
+using ProductionAccounting.Core.Shared;
 using ProductionAccounting.DataAccess.Services.Interfaces;
 
 namespace ProductionAccounting.Application.Services.Implementations
@@ -40,12 +42,15 @@ namespace ProductionAccounting.Application.Services.Implementations
 			return categoryResponse;
 		}
 
-		public async Task<IEnumerable<CategoryDTO>?> GetAllAsync(bool trackChanges)
+		public async Task<PagedResponse<CategoryDTO>> GetAllAsync(RequestParameters requestParameters, bool trackChanges)
 		{
-			var categories = await _repository.CategoryRepository.GetAllAsync(trackChanges);
-			var categoriesDTO = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+			var categoriesWithMetaData = await _repository.CategoryRepository.GetAllAsync(requestParameters, trackChanges);
+			var categoriesDTO = _mapper.Map<IEnumerable<CategoryDTO>>(categoriesWithMetaData);
 
-			return categoriesDTO;
+			return new PagedResponse<CategoryDTO> { 
+				Data = categoriesDTO,
+				MetaData = categoriesWithMetaData.MetaData
+			} ;
 		}
 
 		public async Task<CategoryDTO?> GetByIdAsync(int id, bool trackChanges)

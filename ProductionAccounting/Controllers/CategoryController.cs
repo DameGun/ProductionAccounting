@@ -27,9 +27,9 @@ namespace ProductionAccounting.Api.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetCategoriesAsync()
+		public async Task<IActionResult> GetCategoriesAsync([FromQuery]RequestParameters requestParameters)
 		{
-			var categories = await _service.CategoryService.GetAllAsync(trackChanges: false);
+			var categories = await _service.CategoryService.GetAllAsync(requestParameters, trackChanges: false);
 			return Ok(categories);
 		}
 
