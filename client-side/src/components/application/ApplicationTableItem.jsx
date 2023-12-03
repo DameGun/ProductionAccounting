@@ -1,6 +1,19 @@
-import RemoveModal from "./modals/RemoveModal";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "flowbite-react";
 
 export default function ApplicationTableItem({ application }) {
+  const location = useLocation();
+
+  const applicationRequestModel = {
+    id: application.id,
+    productId: application.product.id,
+    packagesInBox: application.packagesInBoxMax,
+    boxesInPallet: application.boxesInPalletMax,
+    prodDate: new Date(application.prodDate),
+    expDate: new Date(application.expDate),
+    currentApplicationState: application.currentApplicationState,
+  };
+
   return (
     <div className="mt-2 w-3/4 bg-gray-500 dark:bg-gray-600 mx-auto border-gray-500 border rounded-md text-white mb-0.5 h-30">
       <div
@@ -71,7 +84,9 @@ export default function ApplicationTableItem({ application }) {
         <div className="flex items-center border-r-2 pr-3">
           <div>
             <div className="ml-3 my-3 border-gray-200 border-2 bg-gray-400 p-1">
-              <div className="uppercase text-xs leading-4 font-medium">Units</div>
+              <div className="uppercase text-xs leading-4 font-medium">
+                Units
+              </div>
               <div className="text-center text-sm leading-4 font-semibold text-gray-800">
                 NaN
               </div>
@@ -79,10 +94,30 @@ export default function ApplicationTableItem({ application }) {
           </div>
         </div>
         <div className="flex items-center border-r-2 mx-2">
-          <button className="bg-blue-500 text-white hover:bg-blue-600 rounded-md px-2 py-1 text-sm font-medium mr-2">
-            Edit
-          </button>
-          <RemoveModal />
+          <Link
+            to={`/applications/${application.id}/edit`}
+            state={{
+              backgroundLocation: location,
+              application: applicationRequestModel,
+              modalSize: "4xl",
+            }}
+          >
+            <Button color="blue" className="mr-2" size="xs">
+              Edit
+            </Button>
+          </Link>
+          <Link
+            to={`/applications/${application.id}/delete`}
+            state={{
+              backgroundLocation: location,
+              itemId: application.id,
+              modalSize: "sm",
+            }}
+          >
+            <Button color="failure" className="mr-2" size="xs">
+              Remove
+            </Button>
+          </Link>
         </div>
         <div className="flex items-center">
           <div

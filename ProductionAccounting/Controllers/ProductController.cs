@@ -43,7 +43,7 @@ namespace ProductionAccounting.Api.Controllers
 		[HttpPut]
 		public async Task<IActionResult> UpdateProductAsync(int id, [FromBody]UpdateProductDTO updateProductDTO)
 		{
-			var product = await _service.ProductService.UpdateAsync(id, updateProductDTO, true);
+			var product = await _service.ProductService.UpdateAsync(id, updateProductDTO, trackChanges: false);
 			return Ok(product);
 		}
 

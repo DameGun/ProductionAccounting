@@ -1,7 +1,7 @@
-import ApplicationTableItem from "../components/ApplicationTableItem";
+import ApplicationTableItem from "../../components/application/ApplicationTableItem";
 import { useLoaderData, useSearchParams } from "react-router-dom";
-import PaginationComponent from "../components/Pagination";
-import TableHeader from "../components/TableHeader";
+import PaginationComponent from "../../components/Pagination";
+import TableHeader from "../../components/TableHeader";
 
 export default function ApplicationsPage() {
   const [searchParams] = useSearchParams();
@@ -10,13 +10,21 @@ export default function ApplicationsPage() {
 
   return (
     <div className="container mx-auto flex flex-col mt-10">
-      <h1 className="font-bold text-xl text-center text-gray-600 dark:text-white">Applications</h1>
-      <TableHeader defaultPageSize={pageSize} />
+      <h1 className="font-bold text-xl text-center text-gray-600 dark:text-white">
+        Applications
+      </h1>
+      <div className="flex flex-row justify-around items-center my-5">
+        <TableHeader defaultPageSize={pageSize} />
+        <div></div>
+      </div>
       <div className="flex flex-col items-center">
         {data ? (
           <>
             {data.map((application) => (
-              <ApplicationTableItem key={application.id} application={application} />
+              <ApplicationTableItem
+                key={application.id}
+                application={application}
+              />
             ))}
             <PaginationComponent metaData={metaData} pageSize={pageSize} />
           </>

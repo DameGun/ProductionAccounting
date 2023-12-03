@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProductionAccounting.Application.Models;
 using ProductionAccounting.Application.Models.Category;
+using ProductionAccounting.Application.Models.Product;
 using ProductionAccounting.Application.Services.Interfaces;
 using ProductionAccounting.Core.Aggregations;
 using ProductionAccounting.Core.Shared;
@@ -65,7 +66,9 @@ namespace ProductionAccounting.Application.Services.Implementations
 		{
 			var category = await _repository.CategoryRepository.FindById(c => c.Id == id, trackChanges);
 
-			_repository.CategoryRepository.Update(category);
+			var categoryEntity = _mapper.Map<Category>(updateCategoryDTO);
+
+			_repository.CategoryRepository.Update(categoryEntity);
 			await _repository.SaveAsync();
 
 			var categoryResponse = _mapper.Map<CategoryDTO>(category);

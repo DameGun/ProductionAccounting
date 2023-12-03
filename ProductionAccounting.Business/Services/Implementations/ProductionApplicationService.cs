@@ -95,10 +95,10 @@ namespace ProductionAccounting.Application.Services.Implementations
 		public async Task<ProductionApplicationDTO> UpdateAsync(Guid id, UpdateProductionApplicationDTO updateProductionApplicationDTO, bool trackChanges)
 		{
 			var productionApllication = await _repositoryManager.ProductionApplication.FindById(p => p.Id == id, trackChanges);
-			if(productionApllication.CurrentApplicationState != Core.Shared.ApplicationState.Stopped)
-			{
-				throw new ApplicationStateException();
-			}
+			//if(productionApllication.CurrentApplicationState != Core.Shared.ApplicationState.Stopped)
+			//{
+			//	throw new ApplicationStateException();
+			//}
 
 			var productionApplicationEntity = _mapper.Map<ProductionApplication>(updateProductionApplicationDTO);
 

@@ -64,7 +64,7 @@ namespace ProductionAccounting.Api.Controllers
 			[FromBody]UpdateProductionApplicationDTO updateProductionApplicationDTO)
 		{
 			var productionApplication = await _service.ProductionApplicationService
-				.UpdateAsync(id, updateProductionApplicationDTO, trackChanges: true);
+				.UpdateAsync(id, updateProductionApplicationDTO, trackChanges: false);
 			return Ok(productionApplication);
 		}
 

@@ -1,9 +1,10 @@
 import { Datepicker } from "flowbite-react";
 
-export function DatePicker({ handleChange, name, error }) {
+export function DatePicker({ handleChange, name, error, value }) {
   return (
     <>
       <Datepicker
+        defaultDate={value}
         className={
           error &&
           "border disabled:cursor-not-allowed disabled:opacity-50 border-red-500 bg-red-50 text-red-900 placeholder-red-700 focus:border-red-500 focus:ring-red-500 dark:border-red-400 dark:bg-red-100 dark:focus:border-red-500 dark:focus:ring-red-500 text-sm rounded-lg"

@@ -83,16 +83,16 @@ namespace ProductionAccounting.Application.Services.Implementations
 			};
 		}
 
-		public async Task<ProductDTO> UpdateAsync(int id, UpdateProductDTO entity, bool trackChanges)
+		public async Task<ProductDTO> UpdateAsync(int id, UpdateProductDTO updateProductDTO, bool trackChanges)
 		{
 			var product = await _repository.ProductRepository.FindById(p => p.Id == id, trackChanges);
 
-			var productEntity = _mapper.Map<Product>(product);
+			var productEntity = _mapper.Map<Product>(updateProductDTO);
 
 			_repository.ProductRepository.Update(productEntity);
 			await _repository.SaveAsync();
 
-			var productResponse = _mapper.Map<ProductDTO>(product);
+			var productResponse = _mapper.Map<ProductDTO>(productEntity);
 
 			return productResponse;
 		}
