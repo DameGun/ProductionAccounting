@@ -17,7 +17,7 @@ namespace ProductionAccounting.Application.Services.Implementations
 
 		public async Task<ActiveProductionResponse> CreateProductionUnitAsync(ActiveProductionRequest activeProductionRequest, bool trackChanges)
 		{
-			if (activeProductionRequest.CurrentBoxQuantity == 0)
+			if (activeProductionRequest.CurrentBoxQuantity == 1)
 			{
 				if(activeProductionRequest.CurrentPalletQuantity == 0)
 				{
@@ -36,7 +36,13 @@ namespace ProductionAccounting.Application.Services.Implementations
 			var createProductUnitDTO = await _serviceManager.ProductUnitFactory.CreateAsync();
 			var productUnitResponse = await _serviceManager.ProductUnitService.CreateAsync(createProductUnitDTO);
 
-			return new ActiveProductionResponse { Succeeded = true };
+			await _serviceManager.ProductionApplicationService.UpdateActiveProductionApplicationAsync();
+
+			return new ActiveProductionResponse {
+				TotalBoxes = Convert.ToInt32(await _cache.GetStringAsync("totalBoxes")),
+				TotalPallets = Convert.ToInt32(await _cache.GetStringAsync("totalPallets")),
+				TotalUnits = Convert.ToInt32(await _cache.GetStringAsync("totalUnits"))
+			};
 		}
 	}
 }

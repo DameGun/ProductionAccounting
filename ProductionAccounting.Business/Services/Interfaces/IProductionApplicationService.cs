@@ -8,6 +8,7 @@ namespace ProductionAccounting.Application.Services.Interfaces
 	{
 		Task<ProductionApplicationDTO> CreateAsync(CreateProductionApplicationDTO createProductionApplicationDTO, bool trackChanges);
 		Task<ProductionApplicationDTO> UpdateAsync(Guid id, UpdateProductionApplicationDTO entity, bool trackChanges);
+		Task<ProductionApplicationDTO> UpdateActiveProductionApplicationAsync();
 		Task<ProductionApplicationDTO> DeleteAsync(Guid id, bool trackChanges);
 		Task<ProductionApplicationDTO?> GetByIdAsync(Guid id, bool trackChanges);
 		Task<PagedResponse<ProductionApplicationDTO>> GetAllAsync(RequestParameters requestParameters, bool trackChanges);

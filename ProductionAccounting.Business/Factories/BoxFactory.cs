@@ -27,7 +27,11 @@ namespace ProductionAccounting.Application.Factories
 				Packages = productionApplication.PackagesInBoxMax,
 				PalletBarcode = new Guid(currentPalletGuid),
 				ApplicationId = productionApplication.Id
-		};
+			};
+
+			var totalBoxes = Convert.ToInt32(await _cache.GetStringAsync("totalBoxes"));
+
+			await _cache.SetStringAsync("totalBoxes", (++totalBoxes).ToString());
 
 			return createBoxDTO;
 		}

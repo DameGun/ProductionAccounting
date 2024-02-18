@@ -24,10 +24,14 @@ namespace ProductionAccounting.Application.Factories
 			CreateProductUnitDTO createProductUnitDTO = new CreateProductUnitDTO
 			{
 				ProductId = productionApplication.Product.Id,
-				Date = productionApplication.ProdDate,
-				Expire = productionApplication.ExpDate,
+				Date = productionApplication.ProdDate.ToUniversalTime(),
+				Expire = productionApplication.ExpDate.ToUniversalTime(),
 				BoxBarcode = new Guid(currentBoxGuid)
 			};
+
+			var totalUnits = Convert.ToInt32(await _cache.GetStringAsync("totalUnits"));
+
+			await _cache.SetStringAsync("totalUnits", (++totalUnits).ToString());
 
 			return createProductUnitDTO;
 		}

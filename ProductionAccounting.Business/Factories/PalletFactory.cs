@@ -26,6 +26,10 @@ namespace ProductionAccounting.Application.Factories
 				ApplicationId = productionApplication.Id
 			};
 
+			var totalPallets = Convert.ToInt32(await _cache.GetStringAsync("totalPallets"));
+
+			await _cache.SetStringAsync("totalPallets", (++totalPallets).ToString());
+
 			return createPalletDTO;
 		}
 	}

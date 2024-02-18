@@ -24,6 +24,21 @@ namespace ProductionAccounting.DataAccess.Configurations
 				.Property(a => a.BoxesInPallet)
 				.HasColumnName("boxes_in_pallet");
 			builder
+				.Property(a => a.TotalUnits)
+				.HasColumnName("units_total");
+			builder
+				.Property(a => a.TotalBoxes)
+				.HasColumnName("box_total");
+			builder
+				.Property(a => a.TotalPallets)
+				.HasColumnName("pallets_total");
+			builder
+				.Property(a => a.LastBoxGuid)
+				.HasColumnName("last_box_guid");
+			builder
+				.Property(a => a.LastPalletGuid)
+				.HasColumnName("last_pallet_guid");
+			builder
 				.Property(a => a.ProdDate)
 				.HasColumnName("prod_date");
 			builder

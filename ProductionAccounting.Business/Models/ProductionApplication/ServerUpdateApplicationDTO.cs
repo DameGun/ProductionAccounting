@@ -1,6 +1,6 @@
 ﻿namespace ProductionAccounting.Application.Models.ProductionApplication
 {
-	public class UpdateProductionApplicationDTO
+	public class ServerUpdateApplicationDTO
 	{
 		public Guid Id { get; set; }
 		public int ProductId { get; set; }

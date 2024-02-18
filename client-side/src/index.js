@@ -9,9 +9,11 @@ import {
   deleteApplication,
   deleteCategory,
   deleteProduct,
+  getApplicationById,
   getApplications,
   getCategories,
   getProducts,
+  setActiveApplication,
 } from "./utils/api";
 import ProductsPage from "./routes/products/ProductsPage";
 import CategoriesPage from "./routes/categories/CategoriesPage";
@@ -23,6 +25,7 @@ import EditProductPage from "./routes/products/EditProductPage";
 import CreateProductPage from "./routes/products/CreateProductPage";
 import CreateCategoryPage from "./routes/categories/CreateCategoryPage";
 import EditCategoryPage from "./routes/categories/EditCategoryPage";
+import ActiveApplicationPage from "./routes/applications/ActiveApplicationPage";
 
 async function tableLoaderWithPagination(apiCall, request) {
   const url = new URL(request.url);
@@ -46,6 +49,12 @@ const router = createBrowserRouter([
             element: <ApplicationsPage />,
             loader: async ({ request }) =>
               await tableLoaderWithPagination(getApplications, request),
+          },
+          {
+            path: ":applicationId",
+            element: <ActiveApplicationPage />,
+            loader: async ({ params }) =>
+              await setActiveApplication(params.applicationId),
           },
           {
             path: "create",

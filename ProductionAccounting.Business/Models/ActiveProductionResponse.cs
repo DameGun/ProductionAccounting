@@ -2,6 +2,8 @@
 {
 	public class ActiveProductionResponse
 	{
-		public bool Succeeded { get; set; }
+		public int TotalUnits { get; set; }
+		public int TotalBoxes { get; set; }
+		public int TotalPallets { get; set; }
 	}
 }

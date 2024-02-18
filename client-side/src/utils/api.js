@@ -11,9 +11,27 @@ const axiosClient = axios.create({
 
 // ProductionApplication apiCalls
 
+export async function setActiveApplication(id) {
+  return await axiosClient
+    .post(`/applications/setApplicationActive/${id}`)
+    .then((response) => response.data);
+}
+
+export async function createProductionUnit(body) {
+  return await axiosClient
+    .post(`/productUnits`, body)
+    .then((response) => response.data);
+}
+
 export async function getApplications(pageNumber, pageSize) {
   return await axiosClient
     .get(`/applications?PageNumber=${pageNumber}&PageSize=${pageSize}`)
+    .then((response) => response.data);
+}
+
+export async function getApplicationById(id) {
+  return await axiosClient
+    .get(`/applications/${id}`)
     .then((response) => response.data);
 }
 

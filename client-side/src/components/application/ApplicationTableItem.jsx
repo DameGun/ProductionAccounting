@@ -9,6 +9,11 @@ export default function ApplicationTableItem({ application }) {
     productId: application.product.id,
     packagesInBox: application.packagesInBoxMax,
     boxesInPallet: application.boxesInPalletMax,
+    totalUnits: application.totalUnits,
+    totalBoxes: application.totalBoxes,
+    totalPallets: application.totalPallets,
+    lastBoxGuid: application.lastBoxGuid,
+    lastPalletGuid: application.lastPalletGuid,
     prodDate: new Date(application.prodDate),
     expDate: new Date(application.expDate),
     currentApplicationState: application.currentApplicationState,
@@ -88,7 +93,7 @@ export default function ApplicationTableItem({ application }) {
                 Units
               </div>
               <div className="text-center text-sm leading-4 font-semibold text-gray-800">
-                NaN
+                {application.totalUnits}
               </div>
             </div>
           </div>
@@ -102,7 +107,7 @@ export default function ApplicationTableItem({ application }) {
               modalSize: "4xl",
             }}
           >
-            <Button color="blue" className="mr-2" size="xs">
+            <Button disabled={application.currentApplicationState === 0 ? true : false} color="blue" className="mr-2" size="xs">
               Edit
             </Button>
           </Link>
@@ -114,23 +119,43 @@ export default function ApplicationTableItem({ application }) {
               modalSize: "sm",
             }}
           >
-            <Button color="failure" className="mr-2" size="xs">
+            <Button disabled={application.currentApplicationState === 0 ? true : false} color="failure" className="mr-2" size="xs">
               Remove
             </Button>
           </Link>
         </div>
         <div className="flex items-center">
-          <div
-            className={`ml-3 my-5 p-1 w-20 ${
-              application.currentApplicationState === 0
-                ? "bg-green-600"
-                : "bg-red-600"
-            }`}
-          >
-            <div className="uppercase text-xs leading-4 font-semibold text-center text-yellow-100">
-              {application.currentApplicationState === 0 ? "Active" : "Closed"}
+          {application.currentApplicationState === 0 ? (
+            <Link to={`/applications/${application.id}`}>
+              <div
+                className={`ml-3 my-5 p-1 w-20 ${
+                  application.currentApplicationState === 0
+                    ? "bg-green-600"
+                    : "bg-red-600"
+                }`}
+              >
+                <div className="uppercase text-xs leading-4 font-semibold text-center text-yellow-100">
+                  {application.currentApplicationState === 0
+                    ? "Active"
+                    : "Closed"}
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <div
+              className={`ml-3 my-5 p-1 w-20 ${
+                application.currentApplicationState === 0
+                  ? "bg-green-600"
+                  : "bg-red-600"
+              }`}
+            >
+              <div className="uppercase text-xs leading-4 font-semibold text-center text-yellow-100">
+                {application.currentApplicationState === 0
+                  ? "Active"
+                  : "Closed"}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
